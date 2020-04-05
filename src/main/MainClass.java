@@ -27,9 +27,9 @@ public class MainClass {
         String choice = Input.getString("[yYNn]", "Y/N?");
         
         MySqlCon.createConnection();
-        MySqlCon.getListOfStudents();
-        MySqlCon.insertIntoStudents("Michail", "Aggelos", "1985-02-02", "2500.00");
-        MySqlCon.getListOfStudents();
+        MySqlCon.getListOfAllStudents();
+        MySqlCon.createStudent("Michail", "Aggelos", "1985-02-02", "2500.00");
+        MySqlCon.getListOfAllStudents();
         MySqlCon.closeConnection();
         
 //        if(choice.equalsIgnoreCase("n")){
