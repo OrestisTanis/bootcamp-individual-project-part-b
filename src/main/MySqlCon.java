@@ -59,7 +59,7 @@ public class MySqlCon {
             int rowsAffected = statement.executeUpdate();
             System.out.println(rowsAffected + " rows(s) inserted in table 'courses'");
         } catch (SQLException ex) {
-            System.out.println("ERROR: CANNOT EXECUTE INSERT STATEMENT");
+            System.out.println("ERROR: CANNOT INSERT INTO TABLE `courses`");
             System.out.println(ex.toString());
             System.exit(0);
         }
@@ -78,7 +78,7 @@ public class MySqlCon {
             int rowsAffected = statement.executeUpdate();
             System.out.println(rowsAffected + " rows(s) inserted in table 'students'");
         } catch (SQLException ex) {
-            System.out.println("ERROR: CANNOT EXECUTE INSERT STATEMENT");
+            System.out.println("ERROR: CANNOT INSERT INTO TABLE `students`");
             System.out.println(ex.toString());
             System.exit(0);
         }
@@ -96,7 +96,7 @@ public class MySqlCon {
             int rowsAffected = statement.executeUpdate();
             System.out.println(rowsAffected + " rows(s) inserted in table 'trainers'");
         } catch (SQLException ex) {
-            System.out.println("ERROR: CANNOT EXECUTE INSERT STATEMENT");
+            System.out.println("ERROR: CANNOT INSERT INTO TABLE `trainers`");
             System.out.println(ex.toString());
             System.exit(0);
         }
@@ -115,7 +115,7 @@ public class MySqlCon {
             int rowsAffected = statement.executeUpdate();
             System.out.println(rowsAffected + " rows(s) inserted in table 'assignments'");
         } catch (SQLException ex) {
-            System.out.println("ERROR: CANNOT EXECUTE INSERT STATEMENT");
+            System.out.println("ERROR: CANNOT INSERT INTO TABLE `assignments`");
             System.out.println(ex.toString());
             System.exit(0);
         }
@@ -133,7 +133,7 @@ public class MySqlCon {
             int rowsAffected = statement.executeUpdate();
             System.out.println(rowsAffected + " rows(s) inserted in table 'enrollments_students'");
         } catch (SQLException ex) {
-            System.out.println("ERROR: CANNOT EXECUTE INSERT STATEMENT");
+            System.out.println("ERROR: CANNOT INSERT INTO TABLE `enrollments_students`");
             System.out.println(ex.toString());
             System.exit(0);
         }
@@ -150,7 +150,7 @@ public class MySqlCon {
             int rowsAffected = statement.executeUpdate();
             System.out.println(rowsAffected + " rows(s) inserted in table 'enrollments_trainers'");
         } catch (SQLException ex) {
-            System.out.println("ERROR: CANNOT EXECUTE INSERT STATEMENT");
+            System.out.println("ERROR: CANNOT INSERT INTO TABLE `enrollments_trainers`");
             System.out.println(ex.toString());
             System.exit(0);
         }
@@ -167,7 +167,7 @@ public class MySqlCon {
             int rowsAffected = statement.executeUpdate();
             System.out.println(rowsAffected + " rows(s) inserted in table 'enrollments_assignments'");
         } catch (SQLException ex) {
-            System.out.println("ERROR: CANNOT EXECUTE INSERT STATEMENT");
+            System.out.println("ERROR: CANNOT INSERT INTO TABLE `enrollments_assignments`");
             System.out.println(ex.toString());
             System.exit(0);
         }
@@ -181,12 +181,12 @@ public class MySqlCon {
         try {
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM `courses`;");
+            System.out.println("\n****** GETTING LIST OF ALL COURSES *******");
             while (resultSet.next()) {
-                System.out.println("\n****** GETTING LIST OF ALL COURSES *******");
-                System.out.println(resultSet.getString(1) + "." + resultSet.getString(2) + " " + resultSet.getString(3) + ", Start Date: " + resultSet.getString(4) + ", End Date: " + resultSet.getString(5));
+                System.out.println(resultSet.getString(1) + "." + resultSet.getString(2) + " " + resultSet.getString(3) + " " + resultSet.getString(4) + ", Start Date: " + resultSet.getString(5) + ", End Date: " + resultSet.getString(6));
             }
         } catch (SQLException ex) {
-            System.out.println("Sorry, problems with the database connection!");
+            System.out.println("ERROR: CANNOT GET LIST OF ALL COURSES");
             System.out.println(ex.toString());
             System.exit(0);
         } finally {
@@ -206,12 +206,12 @@ public class MySqlCon {
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM `students`;");
             //if(resultSet.first()) return true;
+            System.out.println("\n****** GETTING LIST OF ALL STUDENTS *******");
             while (resultSet.next()) {
-                System.out.println("\n****** GETTING LIST OF ALL STUDENTS *******");
-                System.out.println(resultSet.getString(1) + "." + resultSet.getString(2) + ", Birth Date: " + resultSet.getString(3) + ", Tuition Fees: " + resultSet.getString(4));
+                System.out.println(resultSet.getString(1) + "." + resultSet.getString(2) + " " +resultSet.getString(3) + ", Birth Date: " + resultSet.getString(4) + ", Tuition Fees: " + resultSet.getString(5));
             }
         } catch (SQLException ex) {
-            System.out.println("Sorry, problems with the database connection!");
+            System.out.println("ERROR: CANNOT GET LIST OF ALL STUDENTS");
             System.out.println(ex.toString());
             System.exit(0);
         } finally {
@@ -229,12 +229,12 @@ public class MySqlCon {
         try {
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM `trainers`;");
+            System.out.println("\n****** GETTING LIST OF ALL TRAINERS *******");
             while (resultSet.next()) {
-                System.out.println("\n****** GETTING LIST OF ALL TRAINERS *******");
                 System.out.println(resultSet.getString(1) + "." + resultSet.getString(2) + " " + resultSet.getString(3) + " " + resultSet.getString(4));
             }
         } catch (SQLException ex) {
-            System.out.println("Sorry, problems with the database connection!");
+            System.out.println("ERROR: CANNOT GET LIST OF ALL TRAINERS");
             System.out.println(ex.toString());
             System.exit(0);
         } finally {
@@ -252,12 +252,12 @@ public class MySqlCon {
         try {
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM `assignments`;");
+             System.out.println("\n****** GETTING LIST OF ALL ASSIGNMENTS *******");
             while (resultSet.next()) {
-                System.out.println("\n****** GETTING LIST OF ALL ASSIGNMENTS *******");
                 System.out.println(resultSet.getString(1) + "." + resultSet.getString(2) + " " + resultSet.getString(3));
             }
         } catch (SQLException ex) {
-            System.out.println("Sorry, problems with the database connection!");
+            System.out.println("ERROR: CANNOT GET LIST OF ALL ASSIGNMENTS");
             System.out.println(ex.toString());
             System.exit(0);
         } finally {
@@ -282,12 +282,12 @@ public class MySqlCon {
                         .toString();
                     
             resultSet = statement.executeQuery(sql);
+            System.out.println("\n****** GETTING LIST OF STUDENTS PER COURSE *******");
             while (resultSet.next()) {
-                System.out.println("\n****** GETTING LIST OF STUDENTS PER COURSE *******");
                 System.out.println(resultSet.getString(1) + " : " + resultSet.getString(2));
             }
         } catch (SQLException ex) {
-            System.out.println("Sorry, problems with the database connection!");
+            System.out.println("ERROR: CANNOT GET LIST OF STUDENTS PER COURSE");
             System.out.println(ex.toString());
             System.exit(0);
         } finally {
@@ -305,19 +305,19 @@ public class MySqlCon {
         try {
             statement = connection.createStatement();
             String sql = new StringBuilder()
-                        .append("SELECT CONCAT(`courses`.`title`, ' ', `courses`.`stream`, ' ', `courses`.`type`) AS `course_full_name`, GROUP_CONCAT(`trainers`.`first_name`, ' ', `trainers`.`last_name`) FROM `trainers``")
+                        .append("SELECT CONCAT(`courses`.`title`, ' ', `courses`.`stream`, ' ', `courses`.`type`) AS `course_full_name`, GROUP_CONCAT(`trainers`.`first_name`, ' ', `trainers`.`last_name`) FROM `trainers`")
                         .append("JOIN `enrollments_trainers` on `enrollments_trainers`.`trainers_id` = `trainers`.`id`")
                         .append("JOIN `courses` on `courses`.`id` = `enrollments_trainers`.`courses_id`")
                         .append("GROUP BY `enrollments_trainers`.`courses_id`;")
                         .toString();
                     
             resultSet = statement.executeQuery(sql);
+            System.out.println("\n****** GETTING LIST OF TRAINERS PER COURSE *******");
             while (resultSet.next()) {
-                System.out.println("\n****** GETTING LIST OF TRAINERS PER COURSE *******");
                 System.out.println(resultSet.getString(1) + " : " + resultSet.getString(2));
             }
         } catch (SQLException ex) {
-            System.out.println("Sorry, problems with the database connection!");
+            System.out.println("ERROR: CANNOT GET LIST OF TRAINERS PER COURSE");
             System.out.println(ex.toString());
             System.exit(0);
         } finally {
@@ -342,12 +342,12 @@ public class MySqlCon {
                         .toString();
                     
             resultSet = statement.executeQuery(sql);
+            System.out.println("\n****** GETTING LIST OF ASSIGNMENTS PER COURSE *******");
             while (resultSet.next()) {
-                System.out.println("\n****** GETTING LIST OF ASSIGNMENTS PER COURSE *******");
                 System.out.println(resultSet.getString(1) + " : " + resultSet.getString(2));
             }
         } catch (SQLException ex) {
-            System.out.println("Sorry, problems with the database connection!");
+            System.out.println("ERROR: CANNOT GET LIST OF ASSIGNMENTS PER COURSE");
             System.out.println(ex.toString());
             System.exit(0);
         } finally {
@@ -360,20 +360,31 @@ public class MySqlCon {
     }
     
     public static void getListOfAssignmentsPerCoursePerStudent(){
-        String sql = new StringBuilder()
+        String sql;
+        Statement statement = null;
+        try {
+            statement = connection.createStatement();
+            sql = new StringBuilder()
                         .append("CREATE TEMPORARY TABLE `assignments_per_courses`(")
-                        .append("	`courses_id` INT,")
-                        .append("       `courses_fullname` VARCHAR(135),")
-                        .append("`list_of_assignments` TEXT")
+                        .append("`courses_id` INT,")
+                        .append("`courses_fullname` VARCHAR(135),")
+                        .append("`list_of_assignments` TEXT,")
+                        .append("PRIMARY KEY(`courses_id`)")
                         .append(");")
+//                        .append("INSERT INTO `assignments_per_courses`")
+//                        .append("SELECT `courses`.`id`, CONCAT(`courses`.`title`, ' ', `courses`.`stream`, ' ', `courses`.`type`), GROUP_CONCAT(`assignments`.`title`, ' - ', `assignments`.`submission_date`) AS `list_of_assignments` FROM `assignments`")
+//                        .append("JOIN `enrollments_assignments` on `enrollments_assignments`.`assignments_id` = `assignments`.`id`")
+//                        .append("JOIN `courses` on `courses`.`id` = `enrollments_assignments`.`courses_id`")
+//                        .append("GROUP BY `enrollments_assignments`.`courses_id`;")
+                        .toString();
+            statement.executeUpdate(sql);
+            sql = new StringBuilder()
                         .append("INSERT INTO `assignments_per_courses`")
                         .append("SELECT `courses`.`id`, CONCAT(`courses`.`title`, ' ', `courses`.`stream`, ' ', `courses`.`type`), GROUP_CONCAT(`assignments`.`title`, ' - ', `assignments`.`submission_date`) AS `list_of_assignments` FROM `assignments`")
                         .append("JOIN `enrollments_assignments` on `enrollments_assignments`.`assignments_id` = `assignments`.`id`")
                         .append("JOIN `courses` on `courses`.`id` = `enrollments_assignments`.`courses_id`")
                         .append("GROUP BY `enrollments_assignments`.`courses_id`;")
                         .toString();
-        
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             int rowsAffected = statement.executeUpdate(sql);
             System.out.println(rowsAffected + " rows(s) inserted in the temporary table 'assignments_per_courses'");
         } catch (SQLException ex) {
@@ -382,7 +393,7 @@ public class MySqlCon {
             System.exit(0);
         }
         
-        Statement statement = null;
+        
         ResultSet resultSet = null;
         try {
             statement = connection.createStatement();
@@ -395,23 +406,22 @@ public class MySqlCon {
                         .toString();
                     
             resultSet = statement.executeQuery(sql);
+            System.out.println("\n****** GETTING LIST OF ASSIGNMENTS PER COURSE PER STUDENT *******");
             while (resultSet.next()) {
-                System.out.println("\n****** GETTING LIST OF ASSIGNMENTS PER COURSE PER STUDENT *******");
                 System.out.println(resultSet.getString(1) + ", Course:  " + resultSet.getString(2)+ ", List of Assignments: " + resultSet.getString(2));
             }
         } catch (SQLException ex) {
-            System.out.println("Sorry, problems with the database connection!");
+            System.out.println("ERROR: CANNOT GET LIST OF ASSIGNMENTS PER COURSE PER STUDENT");
             System.out.println(ex.toString());
             System.exit(0);
         } finally {
             try {
                 resultSet.close();
-                statement.close();
+               // statement.close();
             } catch (SQLException ex) {
             }
         }
-        
-        // MPOREI NA THELEI RESULTSET K STATEMENT -> BLOCK SCOPED
+       
         // DROP TEMPORARY TABLE
         sql = new StringBuilder()
                         .append("DROP TEMPORARY TABLE `assignments_per_courses`;")
@@ -419,9 +429,9 @@ public class MySqlCon {
         try {
             statement = connection.createStatement();
             statement.executeUpdate(sql);
-            System.out.println("SUCCESSFULLY DELETED TEMPORARY TABLE 'assignments_per_courses'");
+            System.out.println("SUCCESSFULLY DROPPED TEMPORARY TABLE 'assignments_per_courses'");
         } catch (SQLException ex) {
-            System.out.println("ERROR: CANNOT CREATE OR INSERT INTO TEMPORARY TABLE assignments_per_courses");
+            System.out.println("ERROR: CANNOT DROP TEMPORARY TABLE assignments_per_courses");
             System.out.println(ex.toString());
             System.exit(0);
         }
@@ -435,7 +445,32 @@ public class MySqlCon {
     
     
     public static void getListOfStudentsBelongingToMoreThanOneCourse(){
-    
+         Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.createStatement();
+            String sql = new StringBuilder()
+                        .append("SELECT CONCAT(`students`.`first_name`,' ',`students`.`last_name`), COUNT(1) FROM `students`")
+                        .append("JOIN `enrollments_students` ON `students`.`id` = `enrollments_students`.`students_id`")
+                        .append("GROUP BY `enrollments_students`.`students_id` HAVING COUNT(1) > 1")
+                        .toString();
+                    
+            resultSet = statement.executeQuery(sql);
+              System.out.println("\n****** GETTING LIST OF STUDENS BELONGING TO MORE THAN ONE COURSE *******");
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString(1) + ", Number of courses: " + resultSet.getString(2));
+            }
+        } catch (SQLException ex) {
+            System.out.println("ERROR: CANNOT GET LIST OF STUDENTS BELONING TO MORE THAN ONE COURSE!");
+            System.out.println(ex.toString());
+            System.exit(0);
+        } finally {
+            try {
+                resultSet.close();
+                statement.close();
+            } catch (SQLException ex) {
+            }
+        }
     }
     
     
