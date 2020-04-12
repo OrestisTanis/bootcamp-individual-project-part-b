@@ -10,7 +10,6 @@ import bootcamp.lists.CourseTrainers;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 public class UserData {
@@ -186,7 +185,6 @@ public class UserData {
         }
         return setOfAssignments;
     }
-   
     
     public static Map<Student, Set<Course>> getCoursesPerStudentMap(Set<CourseStudents> setOfStudentsPerCourse, Set<Student> allStudents) {
         Map<Student, Set<Course>> coursesPerStudentMap = new HashMap();
@@ -216,6 +214,7 @@ public class UserData {
         return coursesPerStudentMap.get(student);
     }
  
+    // Used to print local data
     public static Map<Student, Set<Assignment>> getAssignmentsPerStudentMap(Set<CourseAssignments> setOfAssignmentsPerCourse, Set<CourseStudents> setOfStudentsPerCourse, Set<Student> allStudents) {
         Map<Student, Set<Course>> coursesPerStudentMap = getCoursesPerStudentMap(setOfStudentsPerCourse, allStudents);
         Map<Student, Set<Assignment>> assignmentsPerStudentMap = new HashMap();

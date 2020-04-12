@@ -16,8 +16,6 @@ import bootcamp.creators.list.CourseStudentsCreator;
 import bootcamp.creators.list.CourseTrainersCreator;
 import database.models.CourseData;
 import database.models.StudentData;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Set;
 

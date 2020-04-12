@@ -126,7 +126,6 @@ public class Printer implements DateFormatable {
             System.out.println("");
             printSymbol("-", numberOfDashes); 
             printSymbolBeforeAndAfterString("S T U D E N T S", " ", numberOfDashes);
-            System.out.println("");
             printSymbol("-", numberOfDashes); 
             System.out.println(String.format("%-2s %-30s %-30s %-30s %s","#","LAST NAME", "FIRST NAME", "DATE OF BIRTH", "TUITION FEES(\u20ac)"));
             
@@ -160,7 +159,6 @@ public class Printer implements DateFormatable {
             System.out.println("");
             printSymbol("-", numberOfDashes); 
             printSymbolBeforeAndAfterString("T R A I N E R S", " ", numberOfDashes);
-            System.out.println("");
             printSymbol("-", numberOfDashes); 
             System.out.println(String.format("%-2s %-30s %-30s %s","#","LAST NAME", "FIRST NAME", "SUBJECT"));
             
@@ -194,7 +192,6 @@ public class Printer implements DateFormatable {
             System.out.println("");
             printSymbol("-", numberOfDashes); 
             printSymbolBeforeAndAfterString("A S S I G N M E N T S", " ", numberOfDashes);
-            System.out.println("");
             printSymbol("-", numberOfDashes); 
             System.out.println(String.format("%-2s %-40s %-40s %-20s %s","#","TITLE", "DESCRIPTION", "DUE DATE", "PASSING GRADE"));
             
@@ -332,11 +329,11 @@ public class Printer implements DateFormatable {
             System.out.println("");
             printSymbol("-", numberOfDashes); 
             printSymbolBeforeAndAfterString(String.format("COURSE '%s' ASSIGNMENTS", resultSet.getString(5).toUpperCase()), " ", numberOfDashes);
-             
-            resultSet.beforeFirst();
-            int i = 0;
             printSymbol("-", numberOfDashes); 
             System.out.println(String.format("%-2s %-40s %-40s %-20s %s","#","TITLE", "DESCRIPTION", "DUE DATE", "PASSING GRADE"));
+            
+            resultSet.beforeFirst();
+            int i = 0;
             while (resultSet.next()){
                 printSymbol("-", numberOfDashes); 
                  System.out.printf("%d%s %-40s %-40s %-20s %s\n", ++i,".", getStringCutAtIndex(resultSet.getString(1), 36), getStringCutAtIndex(resultSet.getString(2), 36), resultSet.getString(3), resultSet.getString(4));
@@ -362,15 +359,16 @@ public class Printer implements DateFormatable {
                 System.out.println("No assignments listed.\n");
                 return;
             }
+           
             int numberOfDashes = 153;
             System.out.println("");
             printSymbol("-", numberOfDashes); 
             printSymbolBeforeAndAfterString(String.format("ASSIGNMENTS OF STUDENT '%s' FOR COURSE '%s'", resultSet.getString(7).toUpperCase(), resultSet.getString(8).toUpperCase()), " ", numberOfDashes);
+            printSymbol("-", numberOfDashes); 
+            System.out.println(String.format("%-2s %-40s %-40s %-20s %-20s %-20s %s","#","TITLE", "DESCRIPTION", "DUE DATE", "SUBMISSION DATE", "BASE GRADE", "GRADE"));
             
             resultSet.beforeFirst();
             int i = 0;
-            printSymbol("-", numberOfDashes); 
-            System.out.println(String.format("%-2s %-40s %-40s %-20s %-20s %-20s %s","#","TITLE", "DESCRIPTION", "DUE DATE", "SUBMISSION DATE", "BASE GRADE", "GRADE"));
             while (resultSet.next()){
                 printSymbol("-", numberOfDashes); 
                  System.out.printf("%d%s %-40s %-40s %-20s %-20s %-20s %s\n", ++i,".", getStringCutAtIndex(resultSet.getString(1), 36), getStringCutAtIndex(resultSet.getString(2), 36), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getString(6));
@@ -400,11 +398,11 @@ public class Printer implements DateFormatable {
             System.out.println("");
             printSymbol("-", numberOfDashes); 
             printSymbolBeforeAndAfterString(String.format("STUDENTS BELONING TO MORE THAN 1 COURSES", resultSet.getString(5).toUpperCase()), " ", numberOfDashes);
+            printSymbol("-", numberOfDashes); 
+            System.out.println(String.format("%-2s %-30s %-30s %-30s %-20s %s","#","LAST NAME", "FIRST NAME", "DATE OF BIRTH", "TUITION FEES(\u20ac)", "NUMBER OF COURSES"));
             
             resultSet.beforeFirst();
             int i = 0;
-            printSymbol("-", numberOfDashes); 
-            System.out.println(String.format("%-2s %-30s %-30s %-30s %-20s %s","#","LAST NAME", "FIRST NAME", "DATE OF BIRTH", "TUITION FEES(\u20ac)", "NUMBER OF COURSES"));
             while (resultSet.next()){
                printSymbol("-", numberOfDashes); 
                System.out.printf("%d%s %-30s %-30s %-30s %-20s %s\n", ++i,".", resultSet.getString(2), resultSet.getString(1), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5));

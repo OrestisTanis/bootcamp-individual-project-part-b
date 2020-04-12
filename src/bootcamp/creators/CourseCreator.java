@@ -16,13 +16,17 @@ public class CourseCreator extends Creator {
     public void createCourses(UserData userData, Database db){
         String choice = "Y";
         while(choice.equalsIgnoreCase("Y")){
+            // Get input from user
             String title = getTitleFromUser(titleRegex, titleInvalidMsg);
             String stream = getStreamFromUser(titleRegex, titleInvalidMsg);
             String type = getTypeFromUser(titleRegex, titleInvalidMsg);
             LocalDate startDate = getStartDateFromUserAfter(LocalDate.parse("01/01/2015", formatter));
             LocalDate endDate = getEndDateFromUser(startDate);
+            
+            // Store data
             CourseData courseData = new CourseData(title, stream, type, startDate, endDate);
             addCourse(courseData, userData, db);
+            
             System.out.println("\nDo you want to create another course? (Y/N)");
             choice = Input.getString("[yYnN]", "Y/N?");
         }

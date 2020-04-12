@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package database.models;
 
 import bootcamp.core.Trainer;
@@ -11,10 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- *
- * @author orestis
- */
 public class TrainerData extends Trainer {
     /* Fields */
     private int id;
@@ -42,21 +33,24 @@ public class TrainerData extends Trainer {
                         .append("INSERT INTO `trainers`(`first_name`, `last_name`, `subject`)")
                         .append("VALUES(?, ?, ?);").toString();
         try {
+            // Execute query
             db.setPreparedStatementWithKeys(sql);
             PreparedStatement pst =  db.getPreparedStatement();
             pst.setString(1, getFirstName());
             pst.setString(2, getLastName());
             pst.setString(3, getSubject());
-            int rowsAffected = pst.executeUpdate();// Add ID to local object
+            int rowsAffected = pst.executeUpdate();
             System.out.println(rowsAffected + " rows(s) inserted in table 'trainers'");
+            
+            // Add ID to local object
             ResultSet rs = pst.getGeneratedKeys();
             rs.last();
-            setId(rs.getInt(1));
+            setId(rs.getInt(1)); 
             System.out.println("NEW TRAINER ID: " + getId());
+            
             return true;
         } catch (SQLException ex) {
             System.out.println(ex.toString());
-//            System.exit(0);
             return false;
         }
     }

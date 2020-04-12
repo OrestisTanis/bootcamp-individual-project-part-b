@@ -6,7 +6,6 @@ import database.Database;
 import database.models.TrainerData;
 import main.Input;
 
-
 public class TrainerCreator extends Creator {
   
     public TrainerCreator() {
@@ -16,12 +15,15 @@ public class TrainerCreator extends Creator {
     public void createTrainers(UserData userData, Database db) {
         String choice = "Y";
         while (choice.equalsIgnoreCase("Y")) {
+            // Get input from user
             String firstName = getFirstNameFromUser(nameRegex, nameInvalidMsg);
             String lastName = getLastNameFromUser(nameRegex, nameInvalidMsg);
             String subject = getSubjectFromUser(nameRegex, nameInvalidMsg);
+            
+            // Store data
             TrainerData trainerData = new TrainerData(firstName, lastName, subject);
-            //trainerData.insertRecordToTrainers(db);
             addTrainer(trainerData, userData, db);
+            
             System.out.println("\nDo you want to create another Trainer? (Y/N)");
             System.out.println(trainerData);
             choice = Input.getString("[yYnN]", "Y/N?");

@@ -35,23 +35,26 @@ public class CourseStudentsAssignmentsCreator extends Creator {
             }
             
             // Get course ID from user
+            System.out.printf("\nChoose a course: \n");
             CourseData courseData = (CourseData) Input.getCourseFromUser(userData);
             int courseID = courseData.getId();
             
             // Get the students belonging to the course using local data
             Set<Student> setOfStudents = userData.getSetOfStudentsBelongingToCourse((Course)courseData);
+            System.out.println("\nChose a student:");
             // Display the students as options to the user and get the object corresponding to the user's choice
             Input.printOptionsFromSet(setOfStudents);
             Student selectedStudent = (Student) Input.getOptionFromSet(setOfStudents);
             
             // Get the assignments beloning to the course using local data
             Set<Assignment> setOfAssignments = userData.getSetOfAssignmentsBeloningToCourse((Course)courseData);
+            System.out.println("\nChoose an assignment:");
             // Display the students as options to the user and get the object corresponding to the user's choice
             Input.printOptionsFromSet(setOfAssignments);
             Assignment selectedAssignment = (Assignment) Input.getOptionFromSet(setOfAssignments);
             
             // Get submission date from user
-            LocalDate subDate = getSubDateFromUser(courseData, selectedAssignment);
+            LocalDate subDate = getSubDateFromUser(courseData);
             
             // Get grade form user
             int grade = getGrade();
@@ -70,10 +73,10 @@ public class CourseStudentsAssignmentsCreator extends Creator {
         return Input.getIntFromTo(0, 100);
     }
     
-    private LocalDate getSubDateFromUser(CourseData courseData, Assignment selectedAssignment){
-        String invalidDateMsg = getInvalidDateBetweenMsg(courseData.getStartDate().format(formatter), selectedAssignment.getSubDate().format(formatter));
+    private LocalDate getSubDateFromUser(CourseData courseData){
+        String invalidDateMsg = getInvalidDateBetweenMsg(courseData.getStartDate().format(formatter), courseData.getEndDate().format(formatter));
         System.out.printf("\nPlease enter assignment submission date (%s): \n", dateFormatStr);
-        return Input.getLocalDateFromTo(courseData.getStartDate(), selectedAssignment.getSubDate(), getDateFormat(), invalidDateMsg);
+        return Input.getLocalDateFromTo(courseData.getStartDate(), courseData.getEndDate(), getDateFormat(), invalidDateMsg);
     }
     
     private void saveToDB(CourseStudentsAssignmentsData courseStudentsAssignmentsData, Database db){
@@ -83,7 +86,7 @@ public class CourseStudentsAssignmentsCreator extends Creator {
                                "Reason: Selected assignment is already submitted for the chosen student.\n");
             return;
         }
-        System.out.println("Assignment was successfully added as submitted for the chosen student for the chosen course.");
+        System.out.println("Assignment was successfully submitted.");
         //System.out.printf("Assignment with title \"%s\" was successfully added as submitted assignment to student \"%s %s\" for course \"%s %s %s\".\n", assignmentData.getTitle(), course.getTitle(), course.getStream(), course.getType()); 
     }
 }

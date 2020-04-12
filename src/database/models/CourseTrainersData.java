@@ -1,7 +1,6 @@
 package database.models;
 
 import bootcamp.core.Course;
-import bootcamp.core.Trainer;
 import bootcamp.lists.CourseTrainers;
 import database.Database;
 import java.sql.PreparedStatement;
@@ -40,6 +39,7 @@ public class CourseTrainersData extends CourseTrainers{
                         .append("VALUES(?, ?);").toString();
         
         try {
+            // Execute query
             db.setPreparedStatement(sql);
             PreparedStatement pst = db.getPreparedStatement();
             System.out.println("trainers ID:" + trainers_id);
@@ -47,12 +47,11 @@ public class CourseTrainersData extends CourseTrainers{
             pst.setInt(2, courses_id);
             int rowsAffected = pst.executeUpdate();
             System.out.println(rowsAffected + " rows(s) inserted in table 'enrollments_trainers'");
+            
             return true;
         } catch (SQLException ex) {
-//            System.out.println("ERROR: CANNOT INSERT INTO TABLE `enrollments_trainers`");
             System.out.println(ex.toString());
             return false;
-//            System.exit(0);
         }
     }
 }

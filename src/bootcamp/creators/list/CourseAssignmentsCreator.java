@@ -18,6 +18,31 @@ public class CourseAssignmentsCreator implements DateFormatable {
     public CourseAssignmentsCreator(){
     }
     
+    public void createAssignmentsPerCourse(UserData userData, Database db){
+      String choice = "Y";
+        
+        while(choice.equalsIgnoreCase("Y")){
+            if (userData.setOfCoursesIsEmpty()){
+                System.out.println("No available courses to insert assignments to. Returning to main menu.");
+                return;
+            }
+            if (userData.setOfAssignmentsIsEmpty()){
+               System.out.println("No available assignments to insert. Returning to main menu.");
+               return;
+            }
+            
+            // Get input from user
+            AssignmentData assignmentData = (AssignmentData) getAssignmentFromUser(userData);
+            CourseData courseData = (CourseData) getCourseFromUser((Assignment) assignmentData, userData);
+            
+            // Store data
+            addAssignmentToAssignmentsPerCourseList(assignmentData, courseData, userData, db);
+            
+            System.out.println("\nDo you want to insert another Assignment to a course? (Y/N)");
+            choice = Input.getString("[yYnN]", "Y/N?");
+        }
+    }
+    
     private Assignment getAssignmentFromUser(UserData userData){
         System.out.println("\nChoose an assignment to insert to a course: ");
         Set setOfAssignments = userData.getSetOfAssignments();
@@ -32,26 +57,6 @@ public class CourseAssignmentsCreator implements DateFormatable {
         Input.printOptionsFromSet(setOfCourses);
         Course course = (Course)Input.getOptionFromSet(setOfCourses);
         return course;
-    }
-    
-    public void createAssignmentsPerCourse(UserData userData, Database db){
-      String choice = "Y";
-        
-        while(choice.equalsIgnoreCase("Y")){
-            if (userData.setOfCoursesIsEmpty()){
-                System.out.println("No available courses to insert assignments to. Returning to main menu.");
-                return;
-            }
-            if (userData.setOfAssignmentsIsEmpty()){
-               System.out.println("No available assignments to insert. Returning to main menu.");
-               return;
-            }
-            AssignmentData assignmentData = (AssignmentData) getAssignmentFromUser(userData);
-            CourseData courseData = (CourseData) getCourseFromUser((Assignment) assignmentData, userData);
-            addAssignmentToAssignmentsPerCourseList(assignmentData, courseData, userData, db);
-            System.out.println("\nDo you want to insert another Assignment to a course? (Y/N)");
-            choice = Input.getString("[yYnN]", "Y/N?");
-        }
     }
     
     public void addAssignmentToAssignmentsPerCourseList(AssignmentData assignmentData, CourseData courseData, UserData userData, Database db){        
@@ -77,8 +82,7 @@ public class CourseAssignmentsCreator implements DateFormatable {
                // Add assignment to existing set of assignments for this course
                setOfAssignments.add((Assignment)assignmentData);
                saveToDB(assignmentData, (CourseAssignmentsData)assignmentsPerCourse, userData, db);
-               return;
-//               System.out.printf("Assignment with title \"%s\" was added to course %s/%s/%s successfully.\n", assignmentData.getTitle(), courseData.getTitle(), courseData.getStream(), courseData.getType());                                               
+               return; 
            }
         }
         // It's the first time we add an assignment to this course here
@@ -94,7 +98,7 @@ public class CourseAssignmentsCreator implements DateFormatable {
         if (!assignmentsPerCourseData.insertRecordToEnrollmentsAssignments(assignmentData, db)){
             System.out.println("ERROR: Cannot insert assignment to course.\n" +
                              "Reason: There was an error while communicating with the database.\n");
-            // Delete the object that was just saved so local data are in sync with db
+            // Delete the object that was previously stored locally so local data are in sync with db
             userData.removeAssignmentsPerCourseFromSetOfAssignmentsPerCourse((CourseAssignments)assignmentsPerCourseData);
             return;
         }

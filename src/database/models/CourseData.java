@@ -1,23 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package database.models;
 
 import bootcamp.core.Course;
 import database.Database;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDate;
 
-/**
- *
- * @author orestis
- */
 public class CourseData extends Course {
     /* Fields */
     private int id;
@@ -46,6 +35,7 @@ public class CourseData extends Course {
                         .append("INSERT INTO `courses`(`title`, `stream`, `type`, `start_date`, `end_date`)")
                         .append("VALUES(?, ?, ?, ?, ?);").toString();
         try {
+            // Execute query
             db.setPreparedStatementWithKeys(sql);
             PreparedStatement pst =  db.getPreparedStatement();
             pst.setString(1, getTitle());
@@ -55,16 +45,17 @@ public class CourseData extends Course {
             pst.setString(5, getEndDate().toString());
             int rowsAffected = pst.executeUpdate();
             System.out.println(rowsAffected + " rows(s) inserted in table 'courses'");
+            
+            // Add ID to local object
             ResultSet rs = pst.getGeneratedKeys();
             rs.last();
             setId(rs.getInt(1));
             System.out.println("NEW COURSE ID: " + getId());
+            
             return true;
-            //System.out.printf("\nCourse \"%s\" was successfuly created\n!", getTitle());
         } catch (SQLException ex) {
             System.out.println(ex.toString());
             return false;
-            //System.exit(0);
         }
     }
 }

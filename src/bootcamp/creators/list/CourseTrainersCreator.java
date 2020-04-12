@@ -29,9 +29,14 @@ public class CourseTrainersCreator {
                 System.out.println("No available course to assign trainers to. Returning to main menu.");
                 return;
             }
+            
+            // Get input from user
             TrainerData trainerData = (TrainerData) getTrainerFromUser(userData);
             CourseData courseData = (CourseData) getCourseFromUser((Trainer) trainerData, userData);
+            
+            // Store Data
             addTrainerToTrainersPerCourseList(trainerData, courseData, userData, db);
+            
             System.out.println("\nDo you want to insert another Trainer to a course? (Y/N)");
             choice = Input.getString("[yYnN]", "Y/N?");
         }
@@ -71,8 +76,6 @@ public class CourseTrainersCreator {
                setOfTrainers.add((Trainer)trainerData);
                saveToDB(trainerData, (CourseTrainersData) trainersPerCourse, userData, db);
                return;
-               //System.out.printf("Trainer %s %s successfully added to course %s/%s/%s!%n", trainerData.getFirstName(), trainerData.getLastName(), courseData.getTitle(), courseData.getStream(), courseData.getType());
-               //return;
            }
         }
         // It's the first time we add a trainer to this course

@@ -1,7 +1,6 @@
 package database.models;
 
 import database.Database;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -66,6 +65,7 @@ public class CourseStudentsAssignmentsData {
                         .append("INSERT INTO `assignments_students_courses`(`assignments_id`, `students_id`, `courses_id`, `submission_date`, `grade`)")
                         .append("VALUES(?, ?, ?, ?, ?);").toString();
         try {
+            // Execute query
             db.setPreparedStatement(sql);
             PreparedStatement pst = db.getPreparedStatement();
             pst.setInt(1, assignments_id);
@@ -75,12 +75,11 @@ public class CourseStudentsAssignmentsData {
             pst.setInt(5, grade);
             int rowsAffected = pst.executeUpdate();
             System.out.println(rowsAffected + " rows(s) inserted in table 'assignments_students_courses'");
+            
             return true;
         } catch (SQLException ex) {
-            //System.out.println("ERROR: CANNOT INSERT INTO TABLE `assignments_students_courses`");
             System.out.println(ex.toString());
             return false;
-            //System.exit(0);
         }
     }
 }

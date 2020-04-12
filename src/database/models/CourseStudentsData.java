@@ -44,12 +44,11 @@ public class CourseStudentsData extends CourseStudents {
             pst.setInt(2, courses_id);
             int rowsAffected = pst.executeUpdate();
             System.out.println(rowsAffected + " rows(s) inserted in table 'enrollments_students'");
+            
             return true;
         } catch (SQLException ex) {
-            //System.out.println("ERROR: CANNOT INSERT INTO TABLE `enrollments_students`");
             System.out.println(ex.toString());
             return false;
-            //System.exit(0);
         }
     }
 }

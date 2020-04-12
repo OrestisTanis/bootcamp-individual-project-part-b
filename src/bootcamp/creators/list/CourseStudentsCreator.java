@@ -31,9 +31,14 @@ public class CourseStudentsCreator implements DateFormatable {
                 System.out.println("No available course to assign students to. Returning to main menu.");
                 return;
             }
+            
+            // Get input from user
             StudentData studentData = (StudentData) getStudentFromUser(userData);
             CourseData courseData = (CourseData) getCourseFromUser((Student) studentData, userData);
+            
+            // Store data
             addStudentToStudentsPerCourseList(studentData, courseData, userData, db);
+            
             System.out.println("\nDo you want to insert another Student to a course? (Y/N)");
             choice = Input.getString("[yYnN]", "Y/N?");
         }
@@ -72,7 +77,6 @@ public class CourseStudentsCreator implements DateFormatable {
                // Add student to the existing set of students for this course and save it to DB
                setOfStudents.add((Student)studentData);
                saveToDb(studentData, (CourseStudentsData) studentsPerCourse, userData, db);
-//             System.out.printf("Student %s %s successfully added to course %s/%s/%s!%n", student.getFirstName(), student.getLastName(), course.getTitle(), course.getStream(), course.getType());
                return;
            }
         }
@@ -81,15 +85,6 @@ public class CourseStudentsCreator implements DateFormatable {
         studentsPerCourseData.addToSet((Student)studentData);
         userData.addStudentsPerCourseToSetOfStudentsPerCourse((CourseStudents)studentsPerCourseData);
         saveToDb(studentData, studentsPerCourseData, userData, db);
-        
-        // Save to DB
-//        if (!studentsPerCourseData.insertRecordToEnrollmentsStudents(db)){
-//            System.out.print("ERROR: Cannot insert student to course.\n" +
-//                             "Reason: There was an error while communicating with the database.\n");
-//            // Delete the object that was just saved so local data are in sync with db
-//            userData.removeStudentsPerCourseFromSetOfStudentsPerCourse((CourseStudents)studentsPerCourseData);
-//            return;
-//        }
     }
     
      public void saveToDb(StudentData studentData, CourseStudentsData studentsPerCourseData, UserData userData, Database db){

@@ -334,7 +334,7 @@ public class Input{
             String inputStr = scanner.nextLine().trim();
             if (isDateValid(formatter, inputStr)){
                 resultDate = LocalDate.parse(inputStr, formatter);
-                dateValid = minDate.isBefore(resultDate) && maxDate.isAfter(resultDate);
+                dateValid = minDate.isBefore(resultDate.plusDays(1)) && maxDate.plusDays(1).isAfter(resultDate);
             }
             if (!dateValid){
                 System.out.println(invalidInputMessage);
@@ -344,7 +344,6 @@ public class Input{
     }
     
     public static Course getCourseFromUser(UserData userData){
-        System.out.printf("\nChoose a course: ");
         Set setOfCourses = userData.getSetOfCourses();
         Input.printOptionsFromSet(setOfCourses);
         Course course = (Course)Input.getOptionFromSet(setOfCourses);
@@ -352,6 +351,7 @@ public class Input{
     }
     
     public static int getCourseIDFromUser(UserData userData){
+        System.out.println("\nChoose a course: ");
         CourseData courseData = (CourseData)getCourseFromUser(userData);
         return courseData.getId();
     }

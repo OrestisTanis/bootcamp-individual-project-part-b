@@ -17,12 +17,16 @@ public class AssignmentCreator extends Creator {
         String choice = "Y";
      
         while(choice.equalsIgnoreCase("Y")){
+            // Get input from user
             String title = getTitleFromUser(titleRegex, titleInvalidMsg);
             String description = getDescriptionFromUser(titleRegex, titleInvalidMsg);
             LocalDate subDate = getSubDateFromUser(LocalDate.parse("01/01/2015", formatter));
             int grade = getGrade();
+            
+             // Store data
             AssignmentData assignmentData = new AssignmentData(title, description, subDate, grade);
             addAssignment(assignmentData, userData, db);
+            
             System.out.println("\nDo you want to create another assignment? (Y/N)");
             choice = Input.getString("[yYnN]", "Y/N?");
         }
@@ -37,8 +41,6 @@ public class AssignmentCreator extends Creator {
     }
     private LocalDate getSubDateFromUser(LocalDate minDate){
         System.out.printf("\nPlease enter assignment submission date (%s): \n", dateFormatStr);
-        //LocalDate minDate = ;
-        //tring dateInvalidMsg = getInvalidWorkDateAfterMsg(minDate);
         return Input.getWorkDateAfter(minDate, dateFormatStr);
     }
     private int getGrade(){

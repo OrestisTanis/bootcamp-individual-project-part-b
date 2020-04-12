@@ -1,22 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package database.models;
 
 import bootcamp.core.Assignment;
 import database.Database;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-/**
- *
- * @author orestis
- */
 public class AssignmentData extends Assignment {
    /* Fields */
     private int id;
@@ -44,6 +34,7 @@ public class AssignmentData extends Assignment {
                         .append("INSERT INTO `assignments`(`title`, `description`, `due_date`, `passing_grade`)")
                         .append("VALUES(?, ?, ?, ?);").toString();
         try {
+            // Execute query
             db.setPreparedStatementWithKeys(sql);
             PreparedStatement pst =  db.getPreparedStatement();
             pst.setString(1, getTitle());
@@ -52,16 +43,17 @@ public class AssignmentData extends Assignment {
             pst.setInt(4, getGrade());
             int rowsAffected = pst.executeUpdate();
             System.out.println(rowsAffected + " rows(s) inserted in table 'assignments'");
+            
+            // Add ID to local object
             ResultSet rs = pst.getGeneratedKeys();
             rs.last();
             setId(rs.getInt(1));
             System.out.println("NEW ASSIGNMENT ID: " + getId());
+            
             return true;
         } catch (SQLException ex) {
-            //System.out.println("ERROR: CANNOT INSERT INTO TABLE `assignments`");
             System.out.println(ex.toString());
             return false;
-            //System.exit(0);
         }
     }
 }

@@ -17,13 +17,16 @@ public class StudentCreator extends Creator {
         String choice = "Y";
         
         while (choice.equalsIgnoreCase("Y")) {
+            // Get input from user
             String firstName = getFirstNameFromUser(nameRegex, nameInvalidMsg);
             String lastName = getLastNameFromUser(nameRegex, nameInvalidMsg);
             LocalDate birthDate = getBirthDateFromUser(LocalDate.parse("01/01/1950", formatter), LocalDate.now().minusYears(18));
-            Double tuitionFees = getFeesFromUser();              
+            Double tuitionFees = getFeesFromUser();    
+            
+            // Store data
             StudentData studentData = new StudentData(firstName, lastName, birthDate, tuitionFees);
             addStudent(studentData, userData, db);
-            //studentData.insertRecordToStudents(db);
+           
             System.out.println("\nDo you want to create another Student? (Y/N)");
             choice = Input.getString("[yYnN]", "Y/N?");
         }
