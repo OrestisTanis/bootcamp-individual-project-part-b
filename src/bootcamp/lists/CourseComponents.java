@@ -11,6 +11,9 @@ public abstract class CourseComponents<T>{
     private String type;
     
     /* Constructors */
+    protected CourseComponents(){
+    }
+    
     protected CourseComponents(Course course){
         // Save the data-type of the object that's going to be instantiated
         this.type = getClass().getName();

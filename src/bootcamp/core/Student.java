@@ -11,8 +11,10 @@ public class Student implements DateFormatable {
     private LocalDate dateOfBirth;
     private Double tuitionFees;
     
-    /* Constructor */
-    public Student(String firstName, String lastName, LocalDate dateOfBirth, Double tuitionFees){
+    /* Constructors */
+    public Student(){
+    }
+    public Student(String firstName, String lastName, LocalDate dateOfBirth, Double tuitionFees) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;

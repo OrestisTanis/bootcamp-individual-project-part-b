@@ -8,17 +8,18 @@ public class Assignment implements DateFormatable {
     /* Fields */
     private String title;
     private String description;
-    private LocalDate subDateTime;
-    private int oralMark;
-    private int totalMark;
+    private LocalDate subDate;
+    private int grade;
     
-    /* Constructor */ 
-    public Assignment(String title, String description, LocalDate subDateTime, int totalMark){
+    /* Constructors */
+    public Assignment() {
+    }
+    public Assignment(String title, String description, LocalDate subDateTime, int grade){
         this.title = title;
         this.description = description;
-        this.subDateTime = subDateTime;
+        this.subDate = subDateTime;
         //this.oralMark = oralMark;
-        this.totalMark = totalMark;        
+        this.grade = grade;        
     }
     
     /* Accessor Properties */
@@ -36,25 +37,18 @@ public class Assignment implements DateFormatable {
         this.description = description;
     }
     
-    public LocalDate getSubDateTime(){
-        return subDateTime;
+    public LocalDate getSubDate(){
+        return subDate;
     }
-    public void setSubDateTime(LocalDate subDateTime){
-        this.subDateTime = subDateTime;
-    }
-    
-    public int getOralMark(){
-        return oralMark;
-    }
-    public void setOralMark(int oralMark){
-        this.oralMark = oralMark;
+    public void setSubDate(LocalDate subDate){
+        this.subDate = subDate;
     }
     
-    public int getTotalMark(){
-        return totalMark;
+    public int getGrade(){
+        return grade;
     }
-    public void setTotalMark(int totalMark){
-        this.totalMark = totalMark;
+    public void setGrade(int grade){
+        this.grade = grade;
     }
 
     /* Methods */
@@ -63,9 +57,9 @@ public class Assignment implements DateFormatable {
         int hash = 7;
         hash = 79 * hash + Objects.hashCode(this.title);
 //        hash = 79 * hash + Objects.hashCode(this.description);
-        hash = 79 * hash + Objects.hashCode(this.subDateTime);
+        hash = 79 * hash + Objects.hashCode(this.subDate);
         //hash = 79 * hash + this.oralMark;
-        hash = 79 * hash + this.totalMark;
+        hash = 79 * hash + this.grade;
         return hash;
     }
 
@@ -81,10 +75,10 @@ public class Assignment implements DateFormatable {
             return false;
         }
         final Assignment other = (Assignment) obj;
-//        if (this.oralMark != other.oralMark) {
+//        if (this.grade != other.grade) {
 //            return false;
 //        }
-        if (this.totalMark != other.totalMark) {
+        if (this.grade != other.grade) {
             return false;
         }
         if (!Objects.equals(this.title, other.title)) {
@@ -93,7 +87,7 @@ public class Assignment implements DateFormatable {
 //        if (!Objects.equals(this.description, other.description)) {
 //            return false;
 //        }
-        if (!Objects.equals(this.subDateTime, other.subDateTime)) {
+        if (!Objects.equals(this.subDate, other.subDate)) {
             return false;
         }
         return true;
@@ -101,7 +95,7 @@ public class Assignment implements DateFormatable {
 
     @Override
     public String toString() {
-        return String.format("Title: %s, Desc.: %s, Sub.Date: %s %s, Mark Needed: %d", title, description, subDateTime.getDayOfWeek().toString().substring(0, 3) ,subDateTime.format(formatter), totalMark);
+        return String.format("Title: %s, Desc.: %s, Sub.Date: %s %s, G: %d", title, description, subDate.getDayOfWeek().toString().substring(0, 3) ,subDate.format(formatter), grade);
     }
     
 }

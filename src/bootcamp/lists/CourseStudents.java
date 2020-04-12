@@ -5,6 +5,8 @@ import bootcamp.core.Student;
 import java.util.Set;
 
 public class CourseStudents extends CourseComponents<Student> {
+    public CourseStudents(){
+    }
     
     public CourseStudents(Course course){
         super(course);

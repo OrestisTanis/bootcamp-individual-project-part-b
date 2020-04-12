@@ -10,6 +10,7 @@ import bootcamp.lists.CourseTrainers;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 public class UserData {
@@ -87,34 +88,53 @@ public class UserData {
         this.setOfAssignmentsPerCourse = setOfAssignmentsPerCourse;
     }
     
-    
-    
     public boolean addCourseToSetOfCourses(Course course){
         return setOfCourses.add(course);
+    }
+    public boolean removeCourseFromSetOfCourses(Course course){
+        return setOfCourses.remove(course);
     }
     
     public boolean addTrainerToSetOfTrainers(Trainer trainer){
         return setOfTrainers.add(trainer);
     }
+    public boolean removeTrainerFromSetOfTrainers(Trainer trainer){
+        return setOfTrainers.remove(trainer);
+    }
     
     public boolean addAssignmentToSetOfAssignments(Assignment assignment){
         return setOfAssignments.add(assignment);
+    }
+    public boolean removeAssignmentFromSetOfAssignments(Assignment assignment){
+        return setOfAssignments.remove(assignment);
     }
     
     public boolean addStudentToSetOfStudents(Student student){
         return setOfStudents.add(student);
     }
+    public boolean removeStudentFromSetOfStudents(Student student){
+        return setOfStudents.remove(student);
+    }
     
     public boolean addStudentsPerCourseToSetOfStudentsPerCourse(CourseStudents studentsPerCourse){
         return setOfStudentsPerCourse.add(studentsPerCourse);
+    }
+    public boolean removeStudentsPerCourseFromSetOfStudentsPerCourse(CourseStudents studentsPerCourse){
+        return setOfStudentsPerCourse.remove(studentsPerCourse);
     }
     
     public boolean addAssignmentsPerCourseToSetOfAssignmentsPerCourse(CourseAssignments assignmentsPerCourse){
         return setOfAssignmentsPerCourse.add(assignmentsPerCourse);
     }
+    public boolean removeAssignmentsPerCourseFromSetOfAssignmentsPerCourse(CourseAssignments assignmentsPerCourse){
+        return setOfAssignmentsPerCourse.remove(assignmentsPerCourse);
+    }
     
     public boolean addTrainersPerCourseToSetOfTrainersPerCourse(CourseTrainers trainersPerCourse){
         return setOfTrainersPerCourse.add(trainersPerCourse);
+    }
+    public boolean removeTrainersPerCourseFromSetOfTrainersPerCourse(CourseTrainers trainersPerCourse){
+        return setOfTrainersPerCourse.remove(trainersPerCourse);
     }
     
     public boolean setOfCoursesIsEmpty(){
@@ -141,9 +161,32 @@ public class UserData {
         return setOfTrainersPerCourse.isEmpty();
     }
     
-    public boolean setOfStudenrsPerCourseIsEmpty(){
+    public boolean setOfStudentsPerCourseIsEmpty(){
         return setOfStudentsPerCourse.isEmpty();
     }
+    
+    public Set<Student> getSetOfStudentsBelongingToCourse(Course selectedCourse){
+        Set<Student> setOfStudents = null;
+        for (CourseStudents studentsPerCourse : setOfStudentsPerCourse){
+            Course course = studentsPerCourse.getCourse();
+            if (course.equals(selectedCourse)){
+                setOfStudents = studentsPerCourse.getSetOfComponents();
+            }
+        }
+        return setOfStudents;
+    }
+    
+    public Set<Assignment> getSetOfAssignmentsBeloningToCourse(Course selectedCourse){
+        Set<Assignment> setOfAssignments = null;
+        for (CourseAssignments assignmentsPerCourse : setOfAssignmentsPerCourse){
+            Course course = assignmentsPerCourse.getCourse();
+            if (course.equals(selectedCourse)){
+                setOfAssignments = assignmentsPerCourse.getSetOfComponents();
+            }
+        }
+        return setOfAssignments;
+    }
+   
     
     public static Map<Student, Set<Course>> getCoursesPerStudentMap(Set<CourseStudents> setOfStudentsPerCourse, Set<Student> allStudents) {
         Map<Student, Set<Course>> coursesPerStudentMap = new HashMap();
@@ -166,6 +209,11 @@ public class UserData {
             }
         }
         return coursesPerStudentMap;
+    }
+    
+    public  Set<Course> getSetOfCoursesPerStudent(Student student){
+        Map<Student, Set<Course>> coursesPerStudentMap = UserData.getCoursesPerStudentMap(setOfStudentsPerCourse, setOfStudents);
+        return coursesPerStudentMap.get(student);
     }
  
     public static Map<Student, Set<Assignment>> getAssignmentsPerStudentMap(Set<CourseAssignments> setOfAssignmentsPerCourse, Set<CourseStudents> setOfStudentsPerCourse, Set<Student> allStudents) {

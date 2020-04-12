@@ -2,6 +2,8 @@ package bootcamp.creators;
 
 import appstate.UserData;
 import bootcamp.core.Student;
+import database.Database;
+import database.models.StudentData;
 import java.time.LocalDate;
 import main.Input;
 
@@ -11,7 +13,7 @@ public class StudentCreator extends Creator {
     }
 
     /* Methods */
-     public void createStudents(UserData userData) {
+     public void createStudents(UserData userData, Database db) {
         String choice = "Y";
         
         while (choice.equalsIgnoreCase("Y")) {
@@ -19,8 +21,9 @@ public class StudentCreator extends Creator {
             String lastName = getLastNameFromUser(nameRegex, nameInvalidMsg);
             LocalDate birthDate = getBirthDateFromUser(LocalDate.parse("01/01/1950", formatter), LocalDate.now().minusYears(18));
             Double tuitionFees = getFeesFromUser();              
-            Student student = new Student(firstName, lastName, birthDate, tuitionFees);
-            addStudentToSetOfStudents(student, userData);
+            StudentData studentData = new StudentData(firstName, lastName, birthDate, tuitionFees);
+            addStudent(studentData, userData, db);
+            //studentData.insertRecordToStudents(db);
             System.out.println("\nDo you want to create another Student? (Y/N)");
             choice = Input.getString("[yYnN]", "Y/N?");
         }
@@ -46,11 +49,20 @@ public class StudentCreator extends Creator {
         double result = Input.getPositiveDouble();  
         return result;
     }
-    private void addStudentToSetOfStudents(Student student, UserData userData){
-        if (!userData.addStudentToSetOfStudents(student)){
-            System.out.printf("Student %s %s with birth date %s already exists!%n", student.getFirstName(), student.getLastName(), student.getDateOfBirth());
+    private void addStudent(StudentData studentData, UserData userData, Database db){
+        if (!userData.addStudentToSetOfStudents((Student)studentData)){
+            System.out.printf("ERROR: Cannot create student.\n" +
+                              "Reason: A student with firstname \"%s\", lastname \"%s\", and birth date \"%s\" already exists.\n",  
+                               studentData.getFirstName(), studentData.getLastName(), studentData.getDateOfBirth());
             return;
         }
-        System.out.printf("\nStudent %s %s successfuly created!", student.getFirstName(), student.getLastName());
+        if (!studentData.insertRecordToStudents(db)){
+            System.out.print("ERROR: Cannot create student.\n" +
+                              "Reason: There was an error while communicating with the database.\n");
+            // Delete the object that was just saved so local data are in sync with db
+            userData.removeStudentFromSetOfStudents((Student) studentData);
+            return;
+        }
+        System.out.printf("\nStudent %s %s successfuly created!", studentData.getFirstName(), studentData.getLastName());
     }
 }

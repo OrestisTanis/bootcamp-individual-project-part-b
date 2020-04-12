@@ -2,6 +2,7 @@ package appstate;
 
 public enum MenuState { 
     CREATION, 
-    INSERTION, 
+    INSERTION,
+    PRINTING,
     EXITING 
 }

@@ -2,6 +2,8 @@ package bootcamp.creators;
 
 import appstate.UserData;
 import bootcamp.core.Course;
+import database.Database;
+import database.models.CourseData;
 import java.time.LocalDate;
 import main.Input;
 
@@ -11,7 +13,7 @@ public class CourseCreator extends Creator {
     }
     
     /* Methods */
-    public void createCourses(UserData userData){
+    public void createCourses(UserData userData, Database db){
         String choice = "Y";
         while(choice.equalsIgnoreCase("Y")){
             String title = getTitleFromUser(titleRegex, titleInvalidMsg);
@@ -19,8 +21,8 @@ public class CourseCreator extends Creator {
             String type = getTypeFromUser(titleRegex, titleInvalidMsg);
             LocalDate startDate = getStartDateFromUserAfter(LocalDate.parse("01/01/2015", formatter));
             LocalDate endDate = getEndDateFromUser(startDate);
-            Course course = new Course(title, stream, type, startDate, endDate);
-            addCourseToSetOfCourses(course, userData);
+            CourseData courseData = new CourseData(title, stream, type, startDate, endDate);
+            addCourse(courseData, userData, db);
             System.out.println("\nDo you want to create another course? (Y/N)");
             choice = Input.getString("[yYnN]", "Y/N?");
         }
@@ -47,14 +49,21 @@ public class CourseCreator extends Creator {
         //String invalidDateMsg = getInvalidWorkDateAfterMsg(startDate);
         return Input.getWorkDateAfter(startDate, dateFormatStr);
     }
-    private void addCourseToSetOfCourses(Course course, UserData userData){
-        if (!userData.addCourseToSetOfCourses(course)){
-            System.out.printf("Course %s %s %s with starting date %s and ending date %s already exists!%n",  
-                    course.getTitle(), course.getStream(), course.getType(), course.getStartDate(), course.getEndDate());
+    private void addCourse(CourseData courseData, UserData userData, Database db){
+        if (!userData.addCourseToSetOfCourses((Course)courseData)){
+            System.out.printf("ERROR: Cannot create course.\n" +
+                              "Reason: A course with title \"%s\", stream \"%s\" and type \"%s\" already exists.\n",  
+                               courseData.getTitle(), courseData.getStream(), courseData.getType());
             return;
         }
-        
-        System.out.printf("\nCourse \"%s\" successfuly created!", course.getTitle());
+        if (!courseData.insertRecordToCourses(db)){
+            System.out.print("ERROR: Cannot create course.\n" +
+                              "Reason: There was an error while communicating with the database.\n");
+            // Delete the object that was just saved so local data are in sync with db
+            userData.removeCourseFromSetOfCourses((Course)courseData);
+            return;
+        }
+        System.out.printf("\nCourse \"%s\" successfuly created!", courseData.getTitle());
     }
 
 }

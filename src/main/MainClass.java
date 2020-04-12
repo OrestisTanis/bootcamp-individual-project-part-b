@@ -1,64 +1,70 @@
 package main;
 
+import database.Database;
 import appstate.AppState;
 import appstate.MenuState;
 import appstate.UserData;
+import bootcamp.core.Course;
+import bootcamp.core.Student;
 import bootcamp.creators.StudentCreator;
 import bootcamp.creators.CourseCreator;
 import bootcamp.creators.AssignmentCreator;
 import bootcamp.creators.TrainerCreator;
 import bootcamp.creators.list.CourseAssignmentsCreator;
+import bootcamp.creators.list.CourseStudentsAssignmentsCreator;
 import bootcamp.creators.list.CourseStudentsCreator;
 import bootcamp.creators.list.CourseTrainersCreator;
+import database.models.CourseData;
+import database.models.StudentData;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Set;
 
 
 public class MainClass {
     public static void main(String[] args) {
+        // Initialization
         Input.createScanner();
         AppState appState = new AppState();
         UserData userData = appState.getUserData();
+        Database db = new Database();
+        Syncer syncer = new Syncer(userData, db);
+        syncer.syncData();
         
         // Greeting
         Printer.printWelcomeMessage();
-        System.out.println("Do you want to create your own data? If you answer no, synthetic data will be used and printed. (Y/N)");
-        String choice = Input.getString("[yYNn]", "Y/N?");
         
-        MySqlCon.createConnection();
-        //MySqlCon.createStudent("Michail", "Aggelos", "1985-02-02", "2500.00");
-        MySqlCon.getListOfAllStudents();
-        MySqlCon.getListOfAllCourses();
-        MySqlCon.getListOfAllTrainers();
-        MySqlCon.getListOfAllAssignments();
-        MySqlCon.getListOfStudentsPerCourse();
-        MySqlCon.getListOfTrainersPerCourse();
-        MySqlCon.getListOfAssignmentsPerCourse();
-        MySqlCon.getListOfAssignmentsPerCoursePerStudent();
-        MySqlCon.getListOfStudentsBelongingToMoreThanOneCourse();
-        MySqlCon.closeConnection();
-       
-//        if(choice.equalsIgnoreCase("n")){
-//            populateUserDataWithSyntheticData(userData);
-//        }
-//        else {
-//            while (appState.getMenuState() != MenuState.EXITING) {
-//                if (appState.getMenuState() == MenuState.CREATION){
-//                    goToCreationMenu(appState);
-//                }
-//                if (appState.getMenuState() == MenuState.INSERTION) {
-//                    goToInsertionMenu(appState);
-//                }
-//            }
-//        }
-//        Printer.printAll(userData);
-//        askForDate(userData);
-//        Printer.printEndOfProgram();
+        // Menu
+        while (appState.getMenuState() != MenuState.EXITING) {
+            switch(appState.getMenuState()){
+                case CREATION :
+                    goToCreationMenu(appState, db);
+                    break;
+                case INSERTION:
+                    goToInsertionMenu(appState, db);
+                    break;
+                case PRINTING:
+                    goToPrintingMenu(appState, db);
+                    break;
+                default:
+                    break;
+            }
+        }
+//        PRINTLOCAL DATA
+//        Printer.printLocalCourses(userData.getSetOfCourses());
+//        Printer.printLocalTrainers(userData.getSetOfTrainers());
+//        Printer.printLocalAssignments(userData.getSetOfAssignments());
+//        Printer.printLocalStudents(userData.getSetOfStudents());
+//        Printer.printLocalCourseTrainers(userData.getSetOfTrainersPerCourse());
+//        Printer.printLocalCourseStudents(userData.getSetOfStudentsPerCourse());
+//        Printer.printLocalCourseAssignments(userData.getSetOfAssignmentsPerCourse());
+        db.closeConnection();
         Input.closeScanner();
+        Printer.printEndOfProgram();
     }
     
-    public static void goToCreationMenu(AppState appState){
+    public static void goToCreationMenu(AppState appState, Database db){
         MenuState menuState = appState.getMenuState();
         UserData userData = appState.getUserData();
         System.out.println("\nWhat would you like to do?");
@@ -67,19 +73,19 @@ public class MainClass {
         switch (choice) {
             case 1:
                 CourseCreator courseCreator = new CourseCreator();
-                courseCreator.createCourses(userData);
+                courseCreator.createCourses(userData, db);
                 break;
             case 2:
                 TrainerCreator trainerCreator = new TrainerCreator();
-                trainerCreator.createTrainers(userData);
+                trainerCreator.createTrainers(userData, db);
                 break;
             case 3:
                 StudentCreator studentCreator = new StudentCreator();
-                studentCreator.createStudents(userData);
+                studentCreator.createStudents(userData, db);
                 break;
             case 4:
                 AssignmentCreator assignmentCreator = new AssignmentCreator();
-                assignmentCreator.createAssignments(userData);
+                assignmentCreator.createAssignments(userData, db);
                 break;
             case 5:
                 menuState = MenuState.INSERTION;
@@ -91,29 +97,34 @@ public class MainClass {
         appState.setMenuState(menuState);
     }
     
-    public static void goToInsertionMenu(AppState appState){
+    public static void goToInsertionMenu(AppState appState, Database db){
         MenuState menuState = appState.getMenuState();
         UserData userData = appState.getUserData();
         System.out.println("\nWhat would you like to do now?");
-        ArrayList<String> options = Input.printOptions("Insert Trainer to course", "Insert Student to course", "Insert Assignment to course", "Go Back", "Continue to Print", "Exit");                    
+        ArrayList<String> options = Input.printOptions("Insert Trainer to course", "Insert Student to course", "Insert Assignment to course", "Insert Submitted Assignment", "Go Back", "Continue to Print", "Exit");                    
         int choice = Input.getOptionInt(options);
         switch (choice) {
             case 1:
                 CourseTrainersCreator courseTrainersCreator = new CourseTrainersCreator();
-                courseTrainersCreator.createTrainersPerCourse(userData);
+                courseTrainersCreator.createTrainersPerCourse(userData, db);
                 break;
             case 2:
                 CourseStudentsCreator courseStudentsCreator = new CourseStudentsCreator();
-                courseStudentsCreator.createStudentsPerCourse((userData));
+                courseStudentsCreator.createStudentsPerCourse(userData, db);
                 break;
             case 3:
                 CourseAssignmentsCreator courseAssignmentsCreator = new CourseAssignmentsCreator();
-                courseAssignmentsCreator.createAssignmentsPerCourse(userData);
+                courseAssignmentsCreator.createAssignmentsPerCourse(userData, db);
                 break;
             case 4:
+                CourseStudentsAssignmentsCreator submittedAssignmentsCreator = new CourseStudentsAssignmentsCreator();
+                submittedAssignmentsCreator.createSubmittedAssignments(userData, db);
+            case 5:
                 menuState = MenuState.CREATION;
                 break;
-            case 5:
+            case 6:
+                menuState = MenuState.PRINTING;
+                break;
             default:
                 menuState = MenuState.EXITING;
                 break;
@@ -121,30 +132,61 @@ public class MainClass {
         appState.setMenuState(menuState);
     }
     
-    public static void askForDate(UserData userData){
-        String message = " date to print the list of students who need to submit one \n" +
-                            "or more assignments on the same calendar week? (Y/N)";
-        System.out.println("\nLastly, do you want to enter a" + message);
-        String choice = Input.getString("[yYNn]", "Y/N?");
-        while (choice.equalsIgnoreCase("y")){
-            System.out.println("\nPlease enter assignment submission date (dd/MM/yyyy): ");
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String validDate = "2015-01-01";
-            LocalDate assignmentSubDate = Input.getLocalDateAfter(LocalDate.parse(validDate),"dd/MM/yyyy", "Invalid date. Enter a valid date after " + LocalDate.parse(validDate).format(formatter) + " in the format of dd/MM/yyyy: ");
-            Printer.printListOfStudentsWithAssignmentsInWeek(userData, assignmentSubDate);
-            System.out.println("\nDo you want to enter a new" + message + "\n");
-            choice = Input.getString("[yYNn]", "Y/N?");
-        } 
-    }
-   
-    private static void populateUserDataWithSyntheticData(UserData userData){
-        SyntheticData data = new SyntheticData();
-        userData.setSetOfCourses(data.getCourses());
-        userData.setSetOfTrainers(data.getTrainers());
-        userData.setSetOfStudents(data.getStudents());
-        userData.setSetOfAssignments(data.getAssignments());
-        userData.setSetOfTrainersPerCourse(data.getSetOfCourseTrainers());
-        userData.setSetOfStudentsPerCourse(data.getSetOfCourseStudents());
-        userData.setSetOfAssignmentsPerCourse(data.getAssignmentsPerCourses());
+    public static void goToPrintingMenu(AppState appState, Database db){
+        MenuState menuState = appState.getMenuState();
+        UserData userData = appState.getUserData();
+        int courseID;
+        System.out.println("\nWhat would you like to print?");
+        ArrayList<String> options = Input.printOptions("Courses", "Trainers", "Students", "Assignments", "Students per Course",
+                                                        "Trainers per Course", "Assignments Per Course", "Assignments per Course per Student",
+                                                        "Students belonging to more than 1 Courses", "Go Back", "Exit");                    
+        int choice = Input.getOptionInt(options);
+        switch (choice) {
+            case 1:
+                Printer.printCourses();
+                break;
+            case 2:
+                Printer.printTrainers();
+                break;
+            case 3:
+                Printer.printStudents();
+                break;
+            case 4:
+                Printer.printAssignments();
+                break;
+            case 5:
+                courseID = Input.getCourseIDFromUser(userData);
+                Printer.printStudentsPerCourse(courseID);
+                break;
+            case 6:
+                courseID = Input.getCourseIDFromUser(userData);
+                Printer.printTrainersPerCourse(courseID);
+                break;
+            case 7:
+                courseID = Input.getCourseIDFromUser(userData);
+                Printer.printAssignmentsPerCourse(courseID);
+                break;
+            case 8:
+                Student student = Input.getStudentFromUser(userData);
+                int studentID = ((StudentData)student).getId();
+                Set setOfCoursesPerStudent = userData.getSetOfCoursesPerStudent(student);
+                System.out.println("\nChoose a course: ");
+                Input.printOptionsFromSet(setOfCoursesPerStudent);
+                Course course = (Course)Input.getOptionFromSet(setOfCoursesPerStudent);
+                courseID = ((CourseData)course).getId();
+                Printer.printAssignmentsPerCoursePerStudent(courseID, studentID);
+                break;
+            case 9:
+                Printer.printStudentsBelongingToMoreThanOneCourse();
+                break;
+            case 10:
+                menuState = MenuState.INSERTION;
+                break;
+            default:
+                menuState = MenuState.EXITING;
+                break;
+        }
+        appState.setMenuState(menuState);
     }
 }
+    

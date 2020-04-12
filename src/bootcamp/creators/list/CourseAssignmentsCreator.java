@@ -4,6 +4,10 @@ import appstate.UserData;
 import bootcamp.core.Course;
 import bootcamp.core.Assignment;
 import bootcamp.lists.CourseAssignments;
+import database.Database;
+import database.models.AssignmentData;
+import database.models.CourseAssignmentsData;
+import database.models.CourseData;
 import java.util.Iterator;
 import java.util.Set;
 import interfaces.DateFormatable;
@@ -30,8 +34,8 @@ public class CourseAssignmentsCreator implements DateFormatable {
         return course;
     }
     
-    public void createAssignmentsPerCourse(UserData userData){
-        String choice = "Y";
+    public void createAssignmentsPerCourse(UserData userData, Database db){
+      String choice = "Y";
         
         while(choice.equalsIgnoreCase("Y")){
             if (userData.setOfCoursesIsEmpty()){
@@ -42,41 +46,58 @@ public class CourseAssignmentsCreator implements DateFormatable {
                System.out.println("No available assignments to insert. Returning to main menu.");
                return;
             }
-            Assignment assignment = getAssignmentFromUser(userData);
-            Course course = getCourseFromUser(assignment, userData);
-            addAssignmentToAssignmentsPerCourseList(assignment, course, userData);
+            AssignmentData assignmentData = (AssignmentData) getAssignmentFromUser(userData);
+            CourseData courseData = (CourseData) getCourseFromUser((Assignment) assignmentData, userData);
+            addAssignmentToAssignmentsPerCourseList(assignmentData, courseData, userData, db);
             System.out.println("\nDo you want to insert another Assignment to a course? (Y/N)");
             choice = Input.getString("[yYnN]", "Y/N?");
         }
     }
     
-    public void addAssignmentToAssignmentsPerCourseList(Assignment assignment, Course course, UserData userData){
-        if (course.getStartDate().isAfter(assignment.getSubDateTime()) || course.getEndDate().isBefore(assignment.getSubDateTime())){
-            System.out.printf("Assignment %s with submission date %s is not between course start date %s and course end date %s%n", assignment.getTitle(), (assignment.getSubDateTime()).format(formatter).toString(), (course.getStartDate()).format(formatter), (course.getEndDate()).format(formatter));                   
+    public void addAssignmentToAssignmentsPerCourseList(AssignmentData assignmentData, CourseData courseData, UserData userData, Database db){        
+        if (courseData.getStartDate().isAfter(assignmentData.getSubDate()) || courseData.getEndDate().isBefore(assignmentData.getSubDate())){
+            System.out.printf("ERROR: Cannot insert assignment to course.\n" +
+                                "Reason: Assignment %s with submission date %s is not between course start date %s and course end date %s%n", assignmentData.getTitle(), (assignmentData.getSubDate()).format(formatter).toString(), (courseData.getStartDate()).format(formatter), (courseData.getEndDate()).format(formatter));                   
             return ;
         }
-        
         Set<CourseAssignments> setOfAssignmentsPerCourse = userData.getSetOfAssignmentsPerCourse();
         Iterator it = setOfAssignmentsPerCourse.iterator();
         while (it.hasNext()){
            CourseAssignments assignmentsPerCourse = ((CourseAssignments) it.next());
-           if (assignmentsPerCourse.getCourse() == course){
+           // Course already had assignments
+           if (assignmentsPerCourse.getCourse().equals((Course) courseData)){
                Set<Assignment> setOfAssignments = assignmentsPerCourse.getSetOfComponents();
                for (Assignment as: setOfAssignments){
-                   if (as.equals(assignment)){
-                       System.out.printf("Assignment %s with submission date %s and total mark %s already assigned to course %s/%s/%s!%n", assignment.getTitle(), (assignment.getSubDateTime()).format(formatter).toString(), assignment.getTotalMark(), course.getTitle(), course.getStream(), course.getType());
+                   if (as.equals((Assignment) assignmentData)){
+                       System.out.printf("ERROR: Cannot insert assignment to course.\n" +
+                                         "Reason: An assignment with title \"%s\", submission date \"%s\" and passing grade \"%s\" already assigned to course with title: \"%s, %s, %s\".\n", assignmentData.getTitle(), (assignmentData.getSubDate()).format(formatter).toString(), assignmentData.getGrade(), courseData.getTitle(), courseData.getStream(), courseData.getType());
                        return;
                    }
                }
-               setOfAssignments.add(assignment);
-               System.out.printf("Assignment %s successfully added to course %s/%s/%s!%n", assignment.getTitle(), course.getTitle(), course.getStream(), course.getType());                                
+               // Add assignment to existing set of assignments for this course
+               setOfAssignments.add((Assignment)assignmentData);
+               saveToDB(assignmentData, (CourseAssignmentsData)assignmentsPerCourse, userData, db);
                return;
+//               System.out.printf("Assignment with title \"%s\" was added to course %s/%s/%s successfully.\n", assignmentData.getTitle(), courseData.getTitle(), courseData.getStream(), courseData.getType());                                               
            }
         }
-        // If execution reaches here, that means there is no trainersPerCourse obj holding the course specified by the user
-        CourseAssignments assignmentsPerCourse = new CourseAssignments(course);
-        assignmentsPerCourse.addToSet(assignment);
-        userData.addAssignmentsPerCourseToSetOfAssignmentsPerCourse(assignmentsPerCourse);
-        System.out.printf("Assignment %s successfully added to course %s/%s/%s!%n", assignment.getTitle(), course.getTitle(), course.getStream(), course.getType());     
+        // It's the first time we add an assignment to this course here
+        CourseAssignmentsData assignmentsPerCourseData = new CourseAssignmentsData((Course)courseData);
+        assignmentsPerCourseData.addToSet((Assignment)assignmentData);
+        userData.addAssignmentsPerCourseToSetOfAssignmentsPerCourse((CourseAssignments)assignmentsPerCourseData);
+        saveToDB(assignmentData, assignmentsPerCourseData, userData, db);
+    }
+    
+    public void saveToDB(AssignmentData assignmentData, CourseAssignmentsData assignmentsPerCourseData, UserData userData, Database db){
+        Course course = assignmentsPerCourseData.getCourse();
+         // Save to DB
+        if (!assignmentsPerCourseData.insertRecordToEnrollmentsAssignments(assignmentData, db)){
+            System.out.println("ERROR: Cannot insert assignment to course.\n" +
+                             "Reason: There was an error while communicating with the database.\n");
+            // Delete the object that was just saved so local data are in sync with db
+            userData.removeAssignmentsPerCourseFromSetOfAssignmentsPerCourse((CourseAssignments)assignmentsPerCourseData);
+            return;
+        }
+        System.out.printf("Assignment with title \"%s\" was successfully added to course \"%s %s %s\".\n", assignmentData.getTitle(), course.getTitle(), course.getStream(), course.getType()); 
     }
 }

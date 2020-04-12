@@ -4,6 +4,11 @@
  */
 package main;
 
+import appstate.UserData;
+import bootcamp.core.Course;
+import bootcamp.core.Student;
+import database.models.CourseData;
+import database.models.StudentData;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -288,6 +293,8 @@ public class Input{
         return resultDate;
     }
     
+    
+    
     public static LocalDate getWorkDateAfter(LocalDate minDate, String pattern){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         boolean dateValid = false;
@@ -334,5 +341,31 @@ public class Input{
             }
         }
         return resultDate;
+    }
+    
+    public static Course getCourseFromUser(UserData userData){
+        System.out.printf("\nChoose a course: ");
+        Set setOfCourses = userData.getSetOfCourses();
+        Input.printOptionsFromSet(setOfCourses);
+        Course course = (Course)Input.getOptionFromSet(setOfCourses);
+        return course;
+    }
+    
+    public static int getCourseIDFromUser(UserData userData){
+        CourseData courseData = (CourseData)getCourseFromUser(userData);
+        return courseData.getId();
+    }
+    
+    public static Student getStudentFromUser(UserData userData){
+        System.out.println("\nChoose a student: ");
+        Set setOfStudents = userData.getSetOfStudents();
+        Input.printOptionsFromSet(setOfStudents);
+        Student student = (Student) Input.getOptionFromSet(setOfStudents);
+        return student;
+    }
+    
+    public static int getStudentIDFromUser(UserData userData){
+        StudentData studentData = (StudentData) getStudentFromUser(userData);
+        return studentData.getId();
     }
 }

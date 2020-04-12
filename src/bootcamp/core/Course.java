@@ -13,12 +13,13 @@ public class Course implements DateFormatable {
     private LocalDate endDate;
     
     /* Constructor */
-    public Course(String title, String stream, String type){
+    public Course(){
+    }
+    public Course(String title, String stream, String type) {
         this.title = title;
         this.stream = stream;
         this.type = type;
     }
-
     public Course(String title, String stream, String type, LocalDate start_date, LocalDate end_date) {
         this.title = title;
         this.stream = stream;
@@ -70,8 +71,8 @@ public class Course implements DateFormatable {
         hash = 61 * hash + Objects.hashCode(this.title);
         hash = 61 * hash + Objects.hashCode(this.stream);
         hash = 61 * hash + Objects.hashCode(this.type);
-        hash = 61 * hash + Objects.hashCode(this.startDate);
-        hash = 61 * hash + Objects.hashCode(this.endDate);
+//        hash = 61 * hash + Objects.hashCode(this.startDate);
+//        hash = 61 * hash + Objects.hashCode(this.endDate);
         return hash;
     }
     
@@ -96,12 +97,12 @@ public class Course implements DateFormatable {
         if (!Objects.equals(this.type, other.type)) {
             return false;
         }
-        if (!Objects.equals(this.startDate, other.startDate)) {
-            return false;
-        }
-        if (!Objects.equals(this.endDate, other.endDate)) {
-            return false;
-        }
+//        if (!Objects.equals(this.startDate, other.startDate)) {
+//            return false;
+//        }
+//        if (!Objects.equals(this.endDate, other.endDate)) {
+//            return false;
+//        }
         return true;
     }
 

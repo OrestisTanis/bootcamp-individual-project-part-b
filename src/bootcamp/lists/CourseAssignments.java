@@ -5,7 +5,8 @@ import bootcamp.core.Course;
 import java.util.Set;
 
 public class CourseAssignments extends CourseComponents<Assignment> {
-    
+    public CourseAssignments(){
+    }
     public CourseAssignments(Course course){
         super(course);
     }
