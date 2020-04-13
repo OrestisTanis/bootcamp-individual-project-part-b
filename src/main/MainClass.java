@@ -49,7 +49,7 @@ public class MainClass {
                     break;
             }
         }
-//        PRINTLOCAL DATA
+//        PRINT LOCAL DATA
 //        Printer.printLocalCourses(userData.getSetOfCourses());
 //        Printer.printLocalTrainers(userData.getSetOfTrainers());
 //        Printer.printLocalAssignments(userData.getSetOfAssignments());
@@ -135,9 +135,9 @@ public class MainClass {
         UserData userData = appState.getUserData();
         int courseID;
         System.out.println("\nWhat would you like to print?");
-        ArrayList<String> options = Input.printOptions("Courses", "Trainers", "Students", "Assignments", "Students per Course",
-                                                        "Trainers per Course", "Assignments Per Course", "Assignments per Course per Student",
-                                                        "Students belonging to more than 1 Courses", "Go Back", "Exit");                    
+        ArrayList<String> options = Input.printOptions("Courses", "Trainers", "Students", "Assignments", "Students Per Course",
+                                                        "Trainers Per Course", "Assignments Per Course", "Assignments Per Course Per Student",
+                                                        "Students Belonging to More Than One Courses", "Go Back", "Exit");                    
         int choice = Input.getOptionInt(options);
         switch (choice) {
             case 1:

@@ -397,7 +397,7 @@ public class Printer implements DateFormatable {
             int numberOfDashes = 135;
             System.out.println("");
             printSymbol("-", numberOfDashes); 
-            printSymbolBeforeAndAfterString(String.format("STUDENTS BELONING TO MORE THAN 1 COURSES", resultSet.getString(5).toUpperCase()), " ", numberOfDashes);
+            printSymbolBeforeAndAfterString(String.format("STUDENTS BELONGING TO MORE THAN 1 COURSES", resultSet.getString(5).toUpperCase()), " ", numberOfDashes);
             printSymbol("-", numberOfDashes); 
             System.out.println(String.format("%-2s %-30s %-30s %-30s %-20s %s","#","LAST NAME", "FIRST NAME", "DATE OF BIRTH", "TUITION FEES(\u20ac)", "NUMBER OF COURSES"));
             
@@ -434,7 +434,7 @@ public class Printer implements DateFormatable {
     }
     
     //**********************************************************************
-    //********************* PRINT LOCAL DATA ********************************
+    //********************* PRINT LOCAL DATA *******************************
     //**********************************************************************
     public static void printLocalStudents(Set<Student> setOfStudents) {
         printStarsBeforeAndAfterString("PRINTING LIST OF ALL STUDENTS", numberOfStars);

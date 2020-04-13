@@ -11,7 +11,6 @@ import database.models.CourseData;
 import database.models.CourseStudentsAssignmentsData;
 import database.models.StudentData;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.Set;
 import main.Input;
 
@@ -46,7 +45,7 @@ public class CourseStudentsAssignmentsCreator extends Creator {
             Input.printOptionsFromSet(setOfStudents);
             Student selectedStudent = (Student) Input.getOptionFromSet(setOfStudents);
             
-            // Get the assignments beloning to the course using local data
+            // Get the assignments belonging to the course using local data
             Set<Assignment> setOfAssignments = userData.getSetOfAssignmentsBeloningToCourse((Course)courseData);
             System.out.println("\nChoose an assignment:");
             // Display the students as options to the user and get the object corresponding to the user's choice

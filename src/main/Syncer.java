@@ -49,6 +49,8 @@ public class Syncer {
     }
     
     public void syncData(){
+        System.out.println("Initializing...");
+        System.out.println("Syncing local data with the data from the database...");
         syncSetOfCoursesWithDB();
         syncSetOfTrainersWithDB();
         syncSetOfStudentsWithDB();
@@ -56,6 +58,7 @@ public class Syncer {
         syncTrainersPerCourseWithDB();
         syncStudentsPerCourseWithDB();
         syncAssignmentsPerCourseWithDB();
+        System.out.println("");
     }
     
     public void syncSetOfCoursesWithDB(){
@@ -66,7 +69,7 @@ public class Syncer {
                 CourseData courseData = new CourseData(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getDate(5).toLocalDate(), resultSet.getDate(6).toLocalDate());
                 setOfCourses.add((Course)courseData);
             }
-            System.out.println("Course local data synced with db successfully.\n");
+            System.out.println("Course local data synced with db successfully.");
         } catch (SQLException ex) {
             Logger.getLogger(Syncer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -80,7 +83,7 @@ public class Syncer {
                 TrainerData trainerData = new TrainerData(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4));
                 setOfTrainers.add((Trainer)trainerData);
             }
-            System.out.println("Trainer local data synced with db successfully.\n");
+            System.out.println("Trainer local data synced with db successfully.");
         } catch (SQLException ex) {
             Logger.getLogger(Syncer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -94,7 +97,7 @@ public class Syncer {
                 StudentData studentData = new StudentData(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getDate(4).toLocalDate(), resultSet.getDouble(5));
                 setOfStudents.add((Student)studentData);
             }
-            System.out.println("Student local data synced with db successfully.\n");
+            System.out.println("Student local data synced with db successfully.");
         } catch (SQLException ex) {
             Logger.getLogger(Syncer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -108,7 +111,7 @@ public class Syncer {
                 AssignmentData assignmentData = new AssignmentData(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getDate(4).toLocalDate(), resultSet.getInt(5));
                 setOfASsignments.add((Assignment)assignmentData);
             }
-            System.out.println("Assignment local data synced with db successfully.\n");
+            System.out.println("Assignment local data synced with db successfully.");
         } catch (SQLException ex) {
             Logger.getLogger(Syncer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -123,7 +126,7 @@ public class Syncer {
                 TrainerData trainerData = getTrainerObjByID(resultSet.getInt(1));
                 addTrainerToTrainersPerCourseList(trainerData, courseData);
             }
-            System.out.println("Trainers Per Course local data synced with db successfully.\n");
+            System.out.println("Trainers Per Course local data synced with db successfully.");
         } catch (SQLException ex) {
             Logger.getLogger(Syncer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -138,7 +141,7 @@ public class Syncer {
                 StudentData studentData = getStudentObjByID(resultSet.getInt(1));
                 addStudentToStudentsPerCourseList(studentData, courseData);
             }
-            System.out.println("Students Per Course local data synced with db successfully.\n");
+            System.out.println("Students Per Course local data synced with db successfully.");
         } catch (SQLException ex) {
             Logger.getLogger(Syncer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -153,7 +156,7 @@ public class Syncer {
                 AssignmentData assignmentData = getAssignmentObjByID(resultSet.getInt(1));
                 addAssignmentToAssignmentsPerCourseList(assignmentData, courseData);
             }
-            System.out.println("Assignments Per Course local data synced with db successfully.\n");
+            System.out.println("Assignments Per Course local data synced with db successfully.");
         } catch (SQLException ex) {
             Logger.getLogger(Syncer.class.getName()).log(Level.SEVERE, null, ex);
         }
