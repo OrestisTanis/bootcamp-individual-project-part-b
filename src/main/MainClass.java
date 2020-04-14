@@ -28,7 +28,6 @@ public class MainClass {
         UserData userData = appState.getUserData();
         Database db = new Database();
         Syncer syncer = new Syncer(userData, db);
-        //syncer.syncData();
         
         // Greeting
         Printer.printWelcomeMessage();
