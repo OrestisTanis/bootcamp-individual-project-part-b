@@ -43,7 +43,7 @@ public class CourseStudentsData extends CourseStudents {
             pst.setInt(1, studentData.getId());
             pst.setInt(2, courses_id);
             int rowsAffected = pst.executeUpdate();
-            System.out.println(rowsAffected + " rows(s) inserted in table 'enrollments_students'");
+            //System.out.println(rowsAffected + " rows(s) inserted in table 'enrollments_students'");
             
             return true;
         } catch (SQLException ex) {

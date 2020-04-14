@@ -95,7 +95,7 @@ public class Assignment implements DateFormatable {
 
     @Override
     public String toString() {
-        return String.format("Title: %s, Desc.: %s, Sub.Date: %s %s, G: %d", title, description, subDate.getDayOfWeek().toString().substring(0, 3) ,subDate.format(formatter), grade);
+        return String.format("Title: %s, Desc.: %s, Due Date: %s %s, Base Grade: %d", title, description, subDate.getDayOfWeek().toString().substring(0, 3) ,subDate.format(formatter), grade);
     }
     
 }

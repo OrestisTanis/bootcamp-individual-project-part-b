@@ -42,11 +42,10 @@ public class CourseTrainersData extends CourseTrainers{
             // Execute query
             db.setPreparedStatement(sql);
             PreparedStatement pst = db.getPreparedStatement();
-            System.out.println("trainers ID:" + trainers_id);
             pst.setInt(1, trainerData.getId());
             pst.setInt(2, courses_id);
             int rowsAffected = pst.executeUpdate();
-            System.out.println(rowsAffected + " rows(s) inserted in table 'enrollments_trainers'");
+            //System.out.println(rowsAffected + " rows(s) inserted in table 'enrollments_trainers'");
             
             return true;
         } catch (SQLException ex) {

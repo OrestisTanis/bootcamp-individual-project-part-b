@@ -32,6 +32,7 @@ public class Syncer {
     public Syncer(UserData userData, Database db){
         this.userData = userData;
         this.db = db;
+        syncData();
     }
 
     public UserData getUserData() {

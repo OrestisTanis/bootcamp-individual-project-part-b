@@ -44,13 +44,13 @@ public class CourseData extends Course {
             pst.setString(4, getStartDate().toString());
             pst.setString(5, getEndDate().toString());
             int rowsAffected = pst.executeUpdate();
-            System.out.println(rowsAffected + " rows(s) inserted in table 'courses'");
+            //System.out.println(rowsAffected + " rows(s) inserted in table 'courses'");
             
             // Add ID to local object
             ResultSet rs = pst.getGeneratedKeys();
             rs.last();
             setId(rs.getInt(1));
-            System.out.println("NEW COURSE ID: " + getId());
+            //System.out.println("NEW COURSE ID: " + getId());
             
             return true;
         } catch (SQLException ex) {

@@ -175,7 +175,7 @@ public class UserData {
         return setOfStudents;
     }
     
-    public Set<Assignment> getSetOfAssignmentsBeloningToCourse(Course selectedCourse){
+    public Set<Assignment> getSetOfAssignmentsBelongingToCourse(Course selectedCourse){
         Set<Assignment> setOfAssignments = null;
         for (CourseAssignments assignmentsPerCourse : setOfAssignmentsPerCourse){
             Course course = assignmentsPerCourse.getCourse();

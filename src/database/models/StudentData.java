@@ -42,13 +42,13 @@ public class StudentData extends Student {
             pst.setString(3, getDateOfBirth().toString());
             pst.setString(4, getFees().toString());
             int rowsAffected = pst.executeUpdate();
-            System.out.println(rowsAffected + " rows(s) inserted in table 'students'");
+            //System.out.println(rowsAffected + " rows(s) inserted in table 'students'");
             
             // Add ID to local object
             ResultSet rs = pst.getGeneratedKeys();
             rs.last();
             setId(rs.getInt(1));  
-            System.out.println("NEW STUDENT ID: " + getId());
+            //System.out.println("NEW STUDENT ID: " + getId());
             
             return true;
         } catch (SQLException ex) {

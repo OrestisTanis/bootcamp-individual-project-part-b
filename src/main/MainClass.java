@@ -28,7 +28,7 @@ public class MainClass {
         UserData userData = appState.getUserData();
         Database db = new Database();
         Syncer syncer = new Syncer(userData, db);
-        syncer.syncData();
+        //syncer.syncData();
         
         // Greeting
         Printer.printWelcomeMessage();
@@ -49,14 +49,6 @@ public class MainClass {
                     break;
             }
         }
-//        PRINT LOCAL DATA
-//        Printer.printLocalCourses(userData.getSetOfCourses());
-//        Printer.printLocalTrainers(userData.getSetOfTrainers());
-//        Printer.printLocalAssignments(userData.getSetOfAssignments());
-//        Printer.printLocalStudents(userData.getSetOfStudents());
-//        Printer.printLocalCourseTrainers(userData.getSetOfTrainersPerCourse());
-//        Printer.printLocalCourseStudents(userData.getSetOfStudentsPerCourse());
-//        Printer.printLocalCourseAssignments(userData.getSetOfAssignmentsPerCourse());
         db.closeConnection();
         Input.closeScanner();
         Printer.printEndOfProgram();

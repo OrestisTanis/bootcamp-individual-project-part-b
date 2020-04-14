@@ -38,31 +38,36 @@ public class CourseStudentsAssignmentsCreator extends Creator {
             CourseData courseData = (CourseData) Input.getCourseFromUser(userData);
             int courseID = courseData.getId();
             
-            // Get the students belonging to the course using local data
-            Set<Student> setOfStudents = userData.getSetOfStudentsBelongingToCourse((Course)courseData);
-            System.out.println("\nChose a student:");
-            // Display the students as options to the user and get the object corresponding to the user's choice
-            Input.printOptionsFromSet(setOfStudents);
-            Student selectedStudent = (Student) Input.getOptionFromSet(setOfStudents);
-            
             // Get the assignments belonging to the course using local data
-            Set<Assignment> setOfAssignments = userData.getSetOfAssignmentsBeloningToCourse((Course)courseData);
-            System.out.println("\nChoose an assignment:");
-            // Display the students as options to the user and get the object corresponding to the user's choice
-            Input.printOptionsFromSet(setOfAssignments);
-            Assignment selectedAssignment = (Assignment) Input.getOptionFromSet(setOfAssignments);
+            Set<Assignment> setOfAssignments = userData.getSetOfAssignmentsBelongingToCourse((Course)courseData);
+            if (setOfAssignments != null && setOfAssignments.size() > 0){
+                // Get the students belonging to the course using local data
+                Set<Student> setOfStudents = userData.getSetOfStudentsBelongingToCourse((Course)courseData);
+                System.out.println("\nChose a student:");
+                // Display the students as options to the user and get the object corresponding to the user's choice
+                Input.printOptionsFromSet(setOfStudents);
+                Student selectedStudent = (Student) Input.getOptionFromSet(setOfStudents);
+                
+                // Display the students as options to the user and get the object corresponding to the user's choice
+                System.out.println("\nChoose an assignment:");
+                Input.printOptionsFromSet(setOfAssignments);
+                Assignment selectedAssignment = (Assignment) Input.getOptionFromSet(setOfAssignments);
+                
+                // Get submission date from user
+                LocalDate subDate = getSubDateFromUser(courseData);
+
+                // Get grade form user
+                int grade = getGrade();
+
+                // Insert data to DB
+                CourseStudentsAssignmentsData submittedAssignment = new CourseStudentsAssignmentsData(courseID, ((StudentData)selectedStudent).getId(), ((AssignmentData)selectedAssignment).getId(), subDate, grade);
+                saveToDB(submittedAssignment, db);
+            }
+            else {
+                System.out.println("There are no assignments in this course that you can submit for.");
+            }
             
-            // Get submission date from user
-            LocalDate subDate = getSubDateFromUser(courseData);
-            
-            // Get grade form user
-            int grade = getGrade();
-            
-            // Insert data to DB
-            CourseStudentsAssignmentsData submittedAssignment = new CourseStudentsAssignmentsData(courseID, ((StudentData)selectedStudent).getId(), ((AssignmentData)selectedAssignment).getId(), subDate, grade);
-            saveToDB(submittedAssignment, db);
-            
-            System.out.println("\nDo you want to insert another Assignment to a course? (Y/N)");
+            System.out.println("\nDo you want to submit another Assignment to a course? (Y/N)");
             choice = Input.getString("[yYnN]", "Y/N?");
         }
     }

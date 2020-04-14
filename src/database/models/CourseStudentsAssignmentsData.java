@@ -21,7 +21,6 @@ public class CourseStudentsAssignmentsData {
         this.submissionDate = submissionDate;
         this.grade = grade;
     }
-    
 
     /* Properties */
     public int getStudents_id() {
@@ -74,7 +73,7 @@ public class CourseStudentsAssignmentsData {
             pst.setString(4, submissionDate.toString());
             pst.setInt(5, grade);
             int rowsAffected = pst.executeUpdate();
-            System.out.println(rowsAffected + " rows(s) inserted in table 'assignments_students_courses'");
+            //System.out.println(rowsAffected + " rows(s) inserted in table 'assignments_students_courses'");
             
             return true;
         } catch (SQLException ex) {

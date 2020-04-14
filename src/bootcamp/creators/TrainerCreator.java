@@ -25,7 +25,6 @@ public class TrainerCreator extends Creator {
             addTrainer(trainerData, userData, db);
             
             System.out.println("\nDo you want to create another Trainer? (Y/N)");
-            System.out.println(trainerData);
             choice = Input.getString("[yYnN]", "Y/N?");
         }
     }

@@ -42,13 +42,13 @@ public class AssignmentData extends Assignment {
             pst.setString(3, getSubDate().toString());
             pst.setInt(4, getGrade());
             int rowsAffected = pst.executeUpdate();
-            System.out.println(rowsAffected + " rows(s) inserted in table 'assignments'");
+            //System.out.println(rowsAffected + " rows(s) inserted in table 'assignments'");
             
             // Add ID to local object
             ResultSet rs = pst.getGeneratedKeys();
             rs.last();
             setId(rs.getInt(1));
-            System.out.println("NEW ASSIGNMENT ID: " + getId());
+            //System.out.println("NEW ASSIGNMENT ID: " + getId());
             
             return true;
         } catch (SQLException ex) {
