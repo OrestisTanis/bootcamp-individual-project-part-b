@@ -312,7 +312,6 @@ public class Printer implements DateFormatable {
 
     public static void printAssignmentsPerCourse(int course_id) {
         try {
-            
             String sql = String.format("SELECT `assignments`.`title`, `assignments`.`description`, `assignments`.`due_date`, `assignments`.`passing_grade`, CONCAT(`courses`.`title`, ' ', `courses`.`stream`, ' ', `courses`.`type`) AS course_fullname FROM `assignments` " +
                     "JOIN `enrollments_assignments` on `enrollments_assignments`.`assignments_id` = `assignments`.`id` " +
                     "JOIN `courses` on `courses`.`id` = `enrollments_assignments`.`courses_id` AND `courses`.`id` = %s " +
